@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "YouTube Subs Cleaner",
+  "version": "1.0",
+  "description": "Masque les vidéos déjà vues et les Shorts dans l'onglet Abonnements de YouTube.",
+  "content_scripts": [{
+    "matches": ["https://www.youtube.com/*"],
+    "js": ["content.js"],
+    "css": ["content.css"],
+    "run_at": "document_idle"
+  }]
+}
