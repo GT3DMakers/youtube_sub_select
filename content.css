@@ -1,8 +1,8 @@
 .yss-hidden { display: none !important; }
 ytd-rich-item-renderer, ytd-grid-video-renderer, ytd-video-renderer { position: relative; }
 .yss-btn {
-  position: absolute; top: 4px; right: 4px; z-index: 10; display: none;
+  position: absolute; top: 4px; right: 4px; z-index: 9999; opacity: .45;
   width: 28px; height: 28px; border: 0; border-radius: 50%; cursor: pointer;
   background: rgba(0,0,0,.8); color: #fff; font-size: 14px;
 }
-*:hover > .yss-btn { display: block; }
+.yss-btn:hover { opacity: 1; }

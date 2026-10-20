@@ -8,6 +8,15 @@ const hidden = new Set(JSON.parse(localStorage.getItem(KEY) || "[]"));
 
 const videoId = (el) => new URL(el.querySelector("a[href*='/watch?v=']")?.href || "about:blank").searchParams.get("v");
 
+// Règle CSS injectée dès document_start : masque instantanément, sans attendre le scan JS.
+const style = document.createElement("style");
+document.documentElement.append(style);
+const applyHiddenCss = () => {
+  style.textContent = [...hidden].map((id) =>
+    `ytd-rich-item-renderer:has(a[href*="v=${id}"]), ytd-grid-video-renderer:has(a[href*="v=${id}"]), ytd-video-renderer:has(a[href*="v=${id}"]) { display: none !important; }`).join("\n");
+};
+applyHiddenCss();
+
 function addButton(el, id) {
   if (el.querySelector(":scope > .yss-btn")) return;
   const b = document.createElement("button");
@@ -18,6 +27,7 @@ function addButton(el, id) {
     e.preventDefault(); e.stopPropagation();
     hidden.add(id);
     localStorage.setItem(KEY, JSON.stringify([...hidden]));
+    applyHiddenCss();
     scan();
   };
   el.append(b);
@@ -37,6 +47,6 @@ function scan() {
 }
 
 let timer;
-new MutationObserver(() => { clearTimeout(timer); timer = setTimeout(scan, 200); })
-  .observe(document.body, { childList: true, subtree: true });
+new MutationObserver(() => { clearTimeout(timer); timer = setTimeout(scan, 50); })
+  .observe(document.documentElement, { childList: true, subtree: true });
 scan();
